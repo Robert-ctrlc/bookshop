@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ca4bookshop.bookshop.model.Book;
 import com.ca4bookshop.bookshop.repository.BookRepository;
@@ -66,4 +67,22 @@ public class BookController {
         bookRepository.deleteById(id);
         return "redirect:/books";
     }
+
+    @GetMapping("/search")
+    public String searchBooks(@RequestParam String query, Model model) {
+    List<Book> books = bookRepository.findByTitleContainingOrAuthorContainingOrCategoryContaining(query, query, query);
+    model.addAttribute("books", books);
+    return "customer-dashboard"; 
+}
+
+    @GetMapping("/sort")
+    public String sortBooks(@RequestParam String sortBy, @RequestParam String order, Model model) {
+    List<Book> books;
+    if ("asc".equals(order)) {
+        books = bookRepository.findAll(Sort.by(Sort.Order.asc(sortBy)));
+    } else {
+        books = bookRepository.findAll(Sort.by(Sort.Order.desc(sortBy)));
+    }
+    model.addAttribute("books", books);
+    return "customer-dashboard";  
 }

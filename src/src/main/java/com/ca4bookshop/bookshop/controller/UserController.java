@@ -85,6 +85,38 @@ public class UserController {
 
     @GetMapping("/admin-dashboard")
     public String showAdminDashboard() {
-    return "admin-dashboard";  
-}
+        return "admin-dashboard";  
+    }
+
+    
+    @GetMapping("/users")
+    public String viewUsers(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        return "user-list"; 
+    }
+
+    
+    @GetMapping("/users/edit/{id}")
+    public String editUser(@PathVariable Long id, Model model) {
+        User user = userRepository.findById(id).orElseThrow();
+        model.addAttribute("user", user);
+        return "user-edit";  
+    }
+
+    @PostMapping("/users/edit/{id}")
+    public String updateUser(@PathVariable Long id, @ModelAttribute User user) {
+        User existingUser = userRepository.findById(id).orElseThrow();
+        existingUser.setUsername(user.getUsername());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setRole(user.getRole());
+        userRepository.save(existingUser);
+        return "redirect:/users"; 
+    }
+
+    
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userRepository.deleteById(id);
+        return "redirect:/users"; 
+    }
 }

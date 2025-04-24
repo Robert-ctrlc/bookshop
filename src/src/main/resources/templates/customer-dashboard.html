@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Welcome to your Dashboard</h1>
+        <div class="row">
+            
+            <div class="col-md-4">
+                <h4>Search Books</h4>
+                <form th:action="@{/search}" method="get">
+                    <input type="text" name="query" placeholder="Search by title, author, or category" class="form-control"/>
+                    <button type="submit" class="btn btn-primary mt-2">Search</button>
+                </form>
+                <h5>Sort Books</h5>
+                <form th:action="@{/sort}" method="get">
+                    <select name="sortBy" class="form-control">
+                        <option value="title">Title</option>
+                        <option value="author">Author</option>
+                        <option value="price">Price</option>
+                    </select>
+                    <select name="order" class="form-control mt-2">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                    <button type="submit" class="btn btn-secondary mt-2">Sort</button>
+                </form>
+            </div>
+
+            
+            <div class="col-md-4">
+                <h4>Your Cart</h4>
+                <ul th:each="item : ${cart}">
+                    <li th:text="${item.book.title}">Book Title</li>
+                   
+                </ul>
+                <a href="/checkout" class="btn btn-success">Proceed to Checkout</a>
+            </div>
+
+            
+            <div class="col-md-4">
+                <h4>Your Account</h4>
+                <a href="/account" class="btn btn-info">Manage Account</a>
+                <a href="/order-history" class="btn btn-info">View Purchase History</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

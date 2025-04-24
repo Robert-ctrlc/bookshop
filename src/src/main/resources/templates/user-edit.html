@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit User</h1>
+        <form th:action="@{/users/edit/{id}(id=${user.id})}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" th:value="${user.username}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" th:value="${user.email}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" class="form-control">
+                    <option value="USER" th:selected="${user.role == 'USER'}">USER</option>
+                    <option value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        <a href="/users" class="btn btn-secondary mt-3">Back to Users List</a>
+    </div>
+</body>
+</html>
