@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Please sign in</h1>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+        <br />
+        <p>Don't have an account? <a href="/register">Sign up</a></p>
+        <p>Admin? <a href="/login/admin">Admin Login</a></p>  
+    </div>
+</body>
+</html>
+
