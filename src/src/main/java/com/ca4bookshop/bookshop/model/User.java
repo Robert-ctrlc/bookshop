@@ -14,7 +14,7 @@ public class User {
     private String username;
     private String password; 
     private String email;
-
+    private String role;
     // Getters and setters
     public Long getId() {
         return id;
@@ -48,13 +48,11 @@ public class User {
         this.email = email;
     }
 
-    public void setRole(String string) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setRole'");
+    public String getRole() {
+        return role;
     }
 
-    public Object getRole() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRole'");
+    public void setRole(String role) {
+        this.role = role;
     }
 }

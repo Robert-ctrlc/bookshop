@@ -54,18 +54,12 @@ public class UserController {
 
     @PostMapping("/login/admin")
     public String adminLogin(@RequestParam String username, @RequestParam String password, Model model) {
-        try {
-            User user = userRepository.findByUsername(username);
-            if (user != null && user.getPassword().equals(password) && user.getRole().equals("ADMIN")) {
-                return "redirect:/admin-dashboard";
-            }
-            model.addAttribute("error", "Invalid admin credentials");
-            return "admin-login";
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "Error occurred while logging in");
-            return "admin-login";
+        User user = userRepository.findByUsername(username);
+        if (user != null && user.getPassword().equals(password) && user.getRole().equals("ADMIN")) {
+            return "redirect:/admin-dashboard";  
         }
+        model.addAttribute("error", "Invalid admin credentials");
+        return "admin-login";  
     }
 
     @GetMapping("/login")
@@ -88,4 +82,9 @@ public class UserController {
             return "login";
         }
     }
+
+    @GetMapping("/admin-dashboard")
+    public String showAdminDashboard() {
+    return "admin-dashboard";  
+}
 }
