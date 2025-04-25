@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Your Cart</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${cart.items}">
+                    <td th:text="${item.book.title}"></td>
+                    <td th:text="${item.book.author}"></td>
+                    <td th:text="${item.book.price}"></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td>
+                        <a th:href="@{/cart/remove/{itemId}(itemId=${item.id})}" class="btn btn-danger">Remove</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/checkout" class="btn btn-success">Proceed to Checkout</a>
+    </div>
+</body>
+</html>

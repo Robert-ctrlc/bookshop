@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +23,9 @@ public class Book {
     private String isbn;
     private String image;
     
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
     // Getters and Setters
     public Long getId() {
         return id;
@@ -84,5 +89,13 @@ public class Book {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

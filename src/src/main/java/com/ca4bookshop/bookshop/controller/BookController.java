@@ -1,6 +1,9 @@
 package com.ca4bookshop.bookshop.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,19 +73,29 @@ public class BookController {
 
     @GetMapping("/search")
     public String searchBooks(@RequestParam String query, Model model) {
-    List<Book> books = bookRepository.findByTitleContainingOrAuthorContainingOrCategoryContaining(query, query, query);
-    model.addAttribute("books", books);
-    return "customer-dashboard"; 
-}
-
-    @GetMapping("/sort")
-    public String sortBooks(@RequestParam String sortBy, @RequestParam String order, Model model) {
-    List<Book> books;
-    if ("asc".equals(order)) {
-        books = bookRepository.findAll(Sort.by(Sort.Order.asc(sortBy)));
-    } else {
-        books = bookRepository.findAll(Sort.by(Sort.Order.desc(sortBy)));
+        List<Book> books = bookRepository.findByTitleContainingOrAuthorContainingOrCategoryContaining(query, query, query);
+        model.addAttribute("books", books);
+        return "customer-dashboard"; 
     }
-    model.addAttribute("books", books);
-    return "customer-dashboard";  
+
+    @GetMapping("/books/sort")
+    public String sortBooks(@RequestParam String sort, Model model) {
+        List<Book> books;
+        switch (sort) {
+            case "title":
+                books = bookRepository.findAll(Sort.by(Sort.Order.asc("title")));
+                break;
+            case "author":
+                books = bookRepository.findAll(Sort.by(Sort.Order.asc("author")));
+                break;
+            case "price":
+                books = bookRepository.findAll(Sort.by(Sort.Order.asc("price")));
+                break;
+            default:
+                books = bookRepository.findAll();
+                break;
+        }
+        model.addAttribute("books", books);
+        return "customer-dashboard";
+    }
 }

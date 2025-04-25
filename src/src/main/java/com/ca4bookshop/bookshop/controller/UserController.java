@@ -1,17 +1,32 @@
 package com.ca4bookshop.bookshop.controller;
 
+
+import java.util.List;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.ca4bookshop.bookshop.model.Cart;
+import com.ca4bookshop.bookshop.model.CartItem;
 import com.ca4bookshop.bookshop.model.User;
+import com.ca4bookshop.bookshop.repository.CartService;
 import com.ca4bookshop.bookshop.repository.UserRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CartService cartService;
+
+  
 
     @GetMapping("/register")
     public String showRegistrationPage() {
@@ -67,21 +82,28 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String userLogin(@RequestParam String username, @RequestParam String password, Model model) {
-        try {
-            User user = userRepository.findByUsername(username);
-            if (user != null && user.getPassword().equals(password)) {
-                return "redirect:/";
-            }
-            model.addAttribute("error", "Invalid credentials");
-            return "login";
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "Error occurred while logging in");
-            return "login";
-        }
+@PostMapping("/login")
+public String userLogin(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
+    User user = userRepository.findByUsername(username);
+    if (user != null && user.getPassword().equals(password)) {
+        session.setAttribute("loggedInUser", user); 
+        return "redirect:/customer-dashboard"; 
     }
+    model.addAttribute("error", "Invalid credentials");
+    return "login";  
+}
+
+
+private User getLoggedInUser(HttpSession session) {
+    return (User) session.getAttribute("loggedInUser");
+}
+
+@GetMapping("/logout")
+public String logout(HttpSession session) {
+    session.invalidate(); 
+    return "redirect:/login"; 
+}
+
 
     @GetMapping("/admin-dashboard")
     public String showAdminDashboard() {
@@ -118,5 +140,13 @@ public class UserController {
     public String deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
         return "redirect:/users"; 
+    }
+
+    public Cart getLoggedInUserCart(HttpSession session) {
+        User loggedInUser = getLoggedInUser(session); 
+        if (loggedInUser == null) {
+            throw new RuntimeException("No user found in session");
+        }
+        return cartService.getLoggedInUserCart(session); 
     }
 }

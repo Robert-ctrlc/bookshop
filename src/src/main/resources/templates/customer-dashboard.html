@@ -33,9 +33,8 @@
             
             <div class="col-md-4">
                 <h4>Your Cart</h4>
-                <ul th:each="item : ${cart}">
-                    <li th:text="${item.book.title}">Book Title</li>
-                   
+                <<ul th:each="item : ${cart}">
+                    <li th:text="${item.book != null ? item.book.title : 'No book available'}"></li>
                 </ul>
                 <a href="/checkout" class="btn btn-success">Proceed to Checkout</a>
             </div>
@@ -44,7 +43,7 @@
             <div class="col-md-4">
                 <h4>Your Account</h4>
                 <a href="/account" class="btn btn-info">Manage Account</a>
-                <a href="/order-history" class="btn btn-info">View Purchase History</a>
+                <a th:href="@{/account/{userId}/orders(userId=${user.id})}" class="btn btn-info">View Purchase History</a>
             </div>
         </div>
     </div>

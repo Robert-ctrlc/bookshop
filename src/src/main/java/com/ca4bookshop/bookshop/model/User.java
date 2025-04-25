@@ -1,9 +1,12 @@
 package com.ca4bookshop.bookshop.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -15,7 +18,11 @@ public class User {
     private String password; 
     private String email;
     private String role;
-    // Getters and setters
+
+    @OneToMany(mappedBy = "user") 
+    private List<Order> orders;
+
+    
     public Long getId() {
         return id;
     }
@@ -54,5 +61,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
